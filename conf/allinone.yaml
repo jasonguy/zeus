@@ -1,0 +1,62 @@
+config:
+
+    verbose: True
+    debug: True
+
+    domain: zeus.midokura.de
+
+    newrelic_license_key: 5bb3df5f1f18a73de737a37e17690c58252bd183
+
+    # must be a file under /usr/share/zoneinfo
+    timezone: Europe/Berlin
+
+roles:
+    zookeeper:
+    - os001
+
+    cassandra:
+    - os001
+
+    midonet_gateway:
+    - os001
+
+    midonet_cluster:
+    - os001
+
+    midonet_analytics:
+    - os001
+
+    midonet_manager:
+    - os001
+
+    midonet_cli:
+    - os001
+
+    openstack_rabbitmq:
+    - os001
+
+    openstack_mysql:
+    - os001
+
+    openstack_keystone:
+    - os001
+
+    openstack_glance:
+    - os001
+
+    openstack_neutron:
+    - os001
+
+    openstack_horizon:
+    - os001
+
+    openstack_controller:
+    - os001
+
+    openstack_compute:
+    - os001
+
+servers:
+    os001:
+        ip: 192.168.6.159
+
