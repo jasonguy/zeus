@@ -1,4 +1,4 @@
-zeus
+ゼウス
 ====
 
 A compact fabric-based installer for Ubuntu 16.04 with Openstack Mitaka and MEM 5.
