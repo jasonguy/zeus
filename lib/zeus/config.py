@@ -1,58 +1,6 @@
 
 import yaml
 
-class ServiceManager(object):
-    def __init__(self):
-        return
-
-    @classmethod
-    def services(cls):
-        services = {}
-
-        services["keystone"] = {}
-        services["keystone"]["publicurl"] = "5000/v3"
-        services["keystone"]["internalurl"] = "5000/v3"
-        services["keystone"]["adminurl"] = "35357/v3"
-        services["keystone"]["type"] = "identity"
-        services["keystone"]["description"] = "OpenStack Identity"
-
-        services["glance"] = {}
-        services["glance"]["publicurl"] = "9292"
-        services["glance"]["internalurl"] = "9292"
-        services["glance"]["adminurl"] = "9292"
-        services["glance"]["type"] = "image"
-        services["glance"]["description"] = "OpenStack Image Service"
-
-        services["nova"] = {}
-        services["nova"]["publicurl"] = "8774/v2/%(tenant_id)s"
-        services["nova"]["internalurl"] = "8774/v2/%(tenant_id)s"
-        services["nova"]["adminurl"] = "8774/v2/%(tenant_id)s"
-        services["nova"]["type"] = "compute"
-        services["nova"]["description"] = "OpenStack Compute"
-
-        services["neutron"] = {}
-        services["neutron"]["publicurl"] = "9696"
-        services["neutron"]["internalurl"] = "9696"
-        services["neutron"]["adminurl"] = "9696"
-        services["neutron"]["type"] = "network"
-        services["neutron"]["description"] = "OpenStack Networking"
-
-        services["swift"] = {}
-        services["swift"]["publicurl"] = "8080/v1/AUTH_%(tenant_id)s"
-        services["swift"]["internalurl"] = "8080/v1/AUTH_%(tenant_id)s"
-        services["swift"]["adminurl"] = "8080"
-        services["swift"]["type"] = "object-store"
-        services["swift"]["description"] = "OpenStack Object Store"
-
-        services["midonet"] = {}
-        services["midonet"]["publicurl"] = "8181/midonet-api"
-        services["midonet"]["internalurl"] = "8181/midonet-api"
-        services["midonet"]["adminurl"] = "8181/midonet-api"
-        services["midonet"]["type"] = "midonet"
-        services["midonet"]["description"] = "MidoNet API Service"
-
-        return services
-
 class ConfigParser(object):
     def __enter__(self):
         return True
@@ -86,18 +34,32 @@ class ConfigManager(object):
         self.__setup(configfile)
 
     def __setup(self, configfile):
+        self.__setup_config(configfile)
+        self.__setup_servers(configfile)
+        self.__setup_roles(configfile)
+
+    def __setup_config(self, configfile):
         self._config = ConfigParser().parse(configfile, 'config')
-        self._roles = ConfigParser().parse(configfile, 'roles')
+
+    def __setup_servers(self, configfile):
         self._servers = ConfigParser().parse(configfile, 'servers')
+
+    def __setup_roles(self, configfile):
+        self._roles = ConfigParser().parse(configfile, 'roles')
+        if 'all_servers' not in self._roles:
+            self._roles['all_servers'] = []
+            for server in self._servers:
+                self._roles['all_servers'].append(server)
 
     @property
     def config(self):
         return self._config
 
     @property
+    def servers(self):
+        return self._servers
+
+    @property
     def roles(self):
         return self._roles
 
-    @property
-    def servers(self):
-        return self._servers

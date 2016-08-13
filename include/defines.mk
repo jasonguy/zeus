@@ -1,6 +1,8 @@
 
 PP = PYTHONPATH=$(PWD)/lib
 
+STAGES = stages
+
 TMPDIR = $(PWD)/tmp
 
 BINDIR = $(PWD)/bin
@@ -16,4 +18,12 @@ SSHCONFIG = $(SSHDIR)/config
 ifeq "$(CONFIGFILE)" ""
 CONFIGFILE = $(PWD)/conf/allinone.yaml
 endif
+
+CC = CONFIGFILE="$(CONFIGFILE)"
+TT = TMPDIR="$(TMPDIR)"
+PW = PASSWORDCACHE="$(PASSWORDCACHE)"
+FS = --ssh-config-path=$(SSHCONFIG) --disable-known-hosts --user=root
+FF = --fabfile $(STAGES)/$(@)/fabfile.py
+
+FABRIC = $(CC) $(TT) $(PW) $(PP) fab $(FS) $(FF) $(@)
 

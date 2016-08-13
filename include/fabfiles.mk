@@ -1,0 +1,7 @@
+
+pingcheck:
+	$(FABRIC)
+
+connectcheck:
+	$(FABRIC)
+
