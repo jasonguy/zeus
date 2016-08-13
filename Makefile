@@ -1,5 +1,7 @@
 
-all: start passwordcache preflight finish
+include include/defines.mk
 
-include include/zeus.mk
+all: start preflight $(PASSWORDCACHE) $(SSHCONFIG)
+
+include include/targets.mk
 
