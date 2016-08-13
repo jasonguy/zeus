@@ -1,4 +1,6 @@
 
+ALL = start preflight $(PASSWORDCACHE) $(SSHCONFIG) pingcheck connectcheck hostname newrelic cloudarchive distupgrade mysql finish
+
 PP = PYTHONPATH=$(PWD)/lib
 
 STAGES = stages

@@ -1,8 +1,14 @@
 
+#
+# ゼウス
+#
+
 include include/defines.mk
 
-all: start preflight $(PASSWORDCACHE) $(SSHCONFIG) pingcheck connectcheck
+all: $(ALL)
 
 include include/targets.mk
 include include/fabfiles.mk
+
+ci: clean all
 
