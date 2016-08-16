@@ -20,3 +20,9 @@ distupgrade:
 mysql:
 	$(FABRIC)
 
+keystone:
+	$(FABRIC)
+
+configeditor:
+	$(FABRIC)
+
