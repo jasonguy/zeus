@@ -5,7 +5,7 @@ ALL = start \
 			hostname newrelic cloudarchive distupgrade \
 			mysql rabbit memcached configeditor \
 			keystone keystone_services glance nova_controller nova_compute neutron nova_controller_post_neutron dashboard \
-			zookeeper cassandra \
+			zookeeper cassandra midonet_cluster \
 			finish
 
 PP = PYTHONPATH=$(PWD)/lib

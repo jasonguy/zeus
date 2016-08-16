@@ -35,6 +35,9 @@ def nova_compute():
     glance_server = metadata.roles['openstack_glance'][0]
     glance_ip = metadata.servers[glance_server]['ip']
 
+    neutron_server = metadata.roles['openstack_neutron'][0]
+    neutron_ip = metadata.servers[neutron_server]['ip']
+
     my_ip = metadata.servers[env.host_string]['ip']
 
     keystone_configs = {

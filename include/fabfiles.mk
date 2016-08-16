@@ -31,6 +31,9 @@ keystone_services:
 memcached:
 	$(FABRIC)
 
+midonet_cluster:
+	$(FABRIC)
+
 mysql:
 	$(FABRIC)
 

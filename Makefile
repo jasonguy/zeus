@@ -15,6 +15,6 @@ ci: clean all
 fabtargets:
 	bin/mkfabtargets.sh > include/fabfiles.mk
 
-preload:
+preload: fabtargets
 	make $(SSHCONFIG)
 	make $(PASSWORDCACHE)

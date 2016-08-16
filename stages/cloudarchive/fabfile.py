@@ -83,3 +83,17 @@ EOF
         passwords["ADMIN_PASS"],
         passwords["DEMO_PASS"]))
 
+    RepoManager.install("python-midonetclient")
+
+    run("""
+cat >/root/.midonetrc<<EOF
+[cli]
+api_url = http://%s:8181/midonet-api
+username = admin
+password = %s
+project_id = admin
+EOF
+""" % (
+        metadata.servers[metadata.roles['midonet_cluster'][0]]['ip'],
+        passwords["ADMIN_PASS"]))
+
