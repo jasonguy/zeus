@@ -16,7 +16,7 @@ FabricManager.setup(metadata.roles)
 def hostname():
     hosts = []
 
-    for server in metadata.servers:
+    for server in sorted(metadata.servers):
         hosts.append("%s %s.%s %s" % (
             metadata.servers[server]["ip"],
             server,

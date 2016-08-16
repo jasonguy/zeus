@@ -33,7 +33,7 @@ syncLimit=5
 dataDir=/var/lib/zookeeper
 clientPort=2181
 autopurge.snapRetainCount=10
-autopurge.purgeInterval =12
+autopurge.purgeInterval=12
 EOF
 """)
 

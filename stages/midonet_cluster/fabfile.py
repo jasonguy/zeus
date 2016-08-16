@@ -20,6 +20,7 @@ FabricManager.setup(metadata.roles)
 def midonet_cluster():
 
     RepoManager.install("midonet-cluster")
+    RepoManager.install("midonet-cluster-mem")
     RepoManager.install("netcat")
 
     keystone_server = metadata.roles['openstack_keystone'][0]
@@ -41,35 +42,44 @@ cat >/etc/midonet/midonet.conf<<EOF
 zookeeper_hosts = %s
 EOF
 
-cat << EOF | mn-conf set -t default
+mn-conf set -t default <<EOF
 zookeeper {
     zookeeper_hosts = "%s"
 }
 
 cassandra {
     servers = "%s"
+    cluster = "midonet"
 }
 EOF
 
 echo "cassandra.replication_factor : %s" | mn-conf set -t default
 
-$ cat << EOF | mn-conf set -t default
-cluster.auth {
-    provider_class = "org.midonet.cluster.auth.keystone.KeystoneService"
-    admin_role = "admin"
-    keystone.tenant_name = "admin"
-    keystone.admin_token = "%s"
-    keystone.host = %s
-    keystone.port = 35357
-}
-EOF
 """ % (
         ",".join(zookeeper_hosts),
         ",".join(zookeeper_hosts),
         ",".join(cassandra_hosts),
-        cassandra_count,
-        passwords["ADMIN_TOKEN"],
-        keystone_ip))
+        cassandra_count))
 
-    ServiceControl.launch("midonet-cluster")
+    run("""
+mn-conf set -c -t default <<EOF
+cluster.auth {}
+EOF
+""")
 
+    ServiceControl.launch("midonet-cluster", "org.midonet.cluster.ClusterNode")
+
+    run("""
+for i in $(seq 1 30); do
+    midonet-cli -e 'tunnel-zone list' 1>/dev/null 2>/dev/null && break
+    sleep 1
+done
+""")
+
+    run("""
+midonet-cli -e 'tunnel-zone list' | grep 'name vxlan' || midonet-cli -e 'tunnel-zone create name vxlan type vxlan'
+""")
+
+    run("""
+midonet-cli -e 'tunnel-zone list' | grep 'name gre' || midonet-cli -e 'tunnel-zone create name gre type gre'
+""")
