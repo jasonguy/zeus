@@ -46,7 +46,7 @@ systemctl stop keystone
         "connection",
         "mysql+pymysql://keystone:%s@%s/keystone" % (
             passwords["KEYSTONE_DBPASS"],
-            metadata.servers[metadata.roles['openstack_keystone'][0]]['ip']))
+            metadata.servers[metadata.roles['openstack_mysql'][0]]['ip']))
 
     ConfigEditor.setKey("/etc/keystone/keystone.conf", "token", "provider", "fernet")
 

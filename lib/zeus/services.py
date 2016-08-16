@@ -6,7 +6,10 @@ class ServiceControl(object):
         return
 
     @classmethod
-    def launch(cls, service_name, process_name):
+    def launch(cls, service_name, process_name=None):
+        if process_name == None:
+            process_name = service_name
+
         run("""
 SERVICE_NAME="%s"
 PROCESS_NAME="%s"

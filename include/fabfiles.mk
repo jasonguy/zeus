@@ -20,6 +20,9 @@ distupgrade:
 mysql:
 	$(FABRIC)
 
+configeditor:
+	$(FABRIC)
+
 keystone:
 	$(FABRIC)
 
@@ -27,6 +30,6 @@ keystone:
 keystone_services:
 	$(FABRIC)
 
-configeditor:
+glance:
 	$(FABRIC)
 
