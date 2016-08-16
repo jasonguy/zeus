@@ -20,6 +20,12 @@ distupgrade:
 mysql:
 	$(FABRIC)
 
+rabbit:
+	$(FABRIC)
+
+memcached:
+	$(FABRIC)
+
 configeditor:
 	$(FABRIC)
 
@@ -31,5 +37,8 @@ keystone_services:
 	$(FABRIC)
 
 glance:
+	$(FABRIC)
+
+nova_controller:
 	$(FABRIC)
 

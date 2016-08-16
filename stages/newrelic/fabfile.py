@@ -1,5 +1,6 @@
 
 import os
+import sys
 
 from zeus.config import ConfigManager
 from zeus.common import FabricManager
@@ -15,6 +16,9 @@ FabricManager.setup(metadata.roles)
 @parallel
 @roles('all_servers')
 def newrelic():
+    if "NEWRELIC_LICENSE_KEY" not in os.environ:
+        sys.exit(0)
+
     run("""
 mkdir -pv /etc/apt/sources.list.d
 cat >/etc/apt/sources.list.d/newrelic.list<<EOF
@@ -26,7 +30,6 @@ EOF
 
     run("""
 rm -fv /etc/newrelic/nrsysmond.cfg* || true
-
 """)
 
     RepoManager.install("newrelic-sysmond")
@@ -48,7 +51,7 @@ nrsysmond-config --set license_key="${LICENSE_KEY}"
 """ % (
         env.host_string,
         metadata.config["domain"],
-        metadata.config["newrelic_license_key"]))
+        os.environ["NEWRELIC_LICENSE_KEY"]))
 
     ServiceControl.launch("newrelic-sysmond", "nrsysmond")
 
