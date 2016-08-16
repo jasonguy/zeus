@@ -42,3 +42,6 @@ glance:
 nova_controller:
 	$(FABRIC)
 
+nova_compute:
+	$(FABRIC)
+
