@@ -1,5 +1,5 @@
 
-ALL = start preflight $(PASSWORDCACHE) $(SSHCONFIG) pingcheck connectcheck hostname newrelic cloudarchive distupgrade mysql configeditor keystone finish
+ALL = start preflight $(PASSWORDCACHE) $(SSHCONFIG) pingcheck connectcheck hostname newrelic cloudarchive distupgrade mysql configeditor keystone keystone_services finish
 
 PP = PYTHONPATH=$(PWD)/lib
 

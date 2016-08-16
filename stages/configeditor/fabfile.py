@@ -15,7 +15,7 @@ FabricManager.setup(metadata.roles)
 @parallel
 @roles('all_servers')
 def configeditor():
-    # RepoManager.install("software-properties-common")
+    RepoManager.install("sharutils")
 
     run("""
 

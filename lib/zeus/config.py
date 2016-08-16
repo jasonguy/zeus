@@ -37,6 +37,7 @@ class ConfigManager(object):
         self.__setup_config(configfile)
         self.__setup_servers(configfile)
         self.__setup_roles(configfile)
+        self.__setup_aux_roles()
 
     def __setup_config(self, configfile):
         self._config = ConfigParser().parse(configfile, 'config')
@@ -46,10 +47,13 @@ class ConfigManager(object):
 
     def __setup_roles(self, configfile):
         self._roles = ConfigParser().parse(configfile, 'roles')
+
+    def __setup_aux_roles(self):
         if 'all_servers' not in self._roles:
             self._roles['all_servers'] = []
-            for server in self._servers:
-                self._roles['all_servers'].append(server)
+            for server in sorted(self._servers):
+                if server not in self._roles['all_servers']:
+                    self._roles['all_servers'].append(server)
 
     @property
     def config(self):
