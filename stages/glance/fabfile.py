@@ -19,7 +19,7 @@ passwords = PasswordManager(os.environ["PASSWORDCACHE"]).passwords
 FabricManager.setup(metadata.roles)
 
 #
-# http://docs.openstack.org/mitaka/install-guide-ubuntu/keystone-services.html
+# http://docs.openstack.org/mitaka/install-guide-ubuntu/glance-install.html
 #
 @parallel
 @roles('openstack_glance')
