@@ -4,7 +4,7 @@ import os
 from zeus.config import ConfigManager
 from zeus.common import FabricManager
 
-from fabric.api import parallel,roles,puts,run
+from fabric.api import parallel, roles, puts, run
 from fabric.colors import yellow
 
 FabricManager.setup(ConfigManager(os.environ["CONFIGFILE"]).roles)

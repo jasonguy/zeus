@@ -6,7 +6,7 @@ from zeus.common import FabricManager
 from zeus.ubuntu import RepoManager
 from zeus.services import ServiceControl
 
-from fabric.api import parallel,roles,run,env
+from fabric.api import parallel, roles, run, env
 
 metadata = ConfigManager(os.environ["CONFIGFILE"])
 
@@ -45,7 +45,10 @@ hostname=${SERVER_NAME}.${DOMAIN_NAME}
 EOF
 
 nrsysmond-config --set license_key="${LICENSE_KEY}"
-""" % (env.host_string, metadata.config["domain"], metadata.config["newrelic_license_key"]))
+""" % (
+        env.host_string,
+        metadata.config["domain"],
+        metadata.config["newrelic_license_key"]))
 
     ServiceControl.launch("newrelic-sysmond", "nrsysmond")
 

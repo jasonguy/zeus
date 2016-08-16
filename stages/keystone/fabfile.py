@@ -1,8 +1,6 @@
 
 import os
 
-import sys
-
 from zeus.config import ConfigManager
 from zeus.common import FabricManager
 from zeus.common import PasswordManager
@@ -10,7 +8,7 @@ from zeus.configmanagement import ConfigEditor
 from zeus.ubuntu import RepoManager
 from zeus.services import ServiceControl
 
-from fabric.api import parallel,roles,run,env
+from fabric.api import parallel, roles, run, env
 
 metadata = ConfigManager(os.environ["CONFIGFILE"])
 
@@ -38,7 +36,11 @@ systemctl stop keystone
     RepoManager.install("apache2")
     RepoManager.install("libapache2-mod-wsgi")
 
-    ConfigEditor.setKey("/etc/keystone/keystone.conf", "DEFAULT", "admin_token", passwords["ADMIN_TOKEN"])
+    ConfigEditor.setKey(
+        "/etc/keystone/keystone.conf",
+        "DEFAULT",
+        "admin_token",
+        passwords["ADMIN_TOKEN"])
 
     ConfigEditor.setKey(
         "/etc/keystone/keystone.conf",
@@ -48,7 +50,11 @@ systemctl stop keystone
             passwords["KEYSTONE_DBPASS"],
             metadata.servers[metadata.roles['openstack_mysql'][0]]['ip']))
 
-    ConfigEditor.setKey("/etc/keystone/keystone.conf", "token", "provider", "fernet")
+    ConfigEditor.setKey(
+        "/etc/keystone/keystone.conf",
+        "token",
+        "provider",
+        "fernet")
 
     run("""
 su -s /bin/sh -c "keystone-manage db_sync" keystone

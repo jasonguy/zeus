@@ -10,7 +10,7 @@ from zeus.configmanagement import ConfigEditor
 from zeus.ubuntu import RepoManager
 from zeus.services import ServiceControl
 
-from fabric.api import parallel,roles,run,env
+from fabric.api import parallel, roles, run, env
 
 metadata = ConfigManager(os.environ["CONFIGFILE"])
 
@@ -64,10 +64,16 @@ openstack endpoint list | grep image | grep admin    || openstack endpoint creat
         "filesystem_store_datadir",
         "/var/lib/glance/images/")
 
-    keystone_ip = metadata.servers[metadata.roles['openstack_keystone'][0]]['ip']
-    controller_ip = metadata.servers[metadata.roles['openstack_controller'][0]]['ip']
+    keystone_server = metadata.roles['openstack_keystone'][0]
+    keystone_ip = metadata.servers[keystone_server]['ip']
 
-    glance_keystone_configs= {
+    controller = metadata.roles['openstack_controller'][0]
+    controller_ip = metadata.servers[controller]['ip']
+
+    mysql_server = metadata.roles['openstack_mysql'][0]
+    mysql_ip = metadata.servers[mysql_server]['ip']
+
+    glance_keystone_configs = {
         'auth_uri': 'http://%s:5000' % keystone_ip,
         'auth_url': 'http://%s:35357' % keystone_ip,
         'memcached_servers': '%s:11211' % controller_ip,
@@ -78,14 +84,16 @@ openstack endpoint list | grep image | grep admin    || openstack endpoint creat
         'username': 'glance',
         'password': passwords["GLANCE_PASS"]}
 
-    for config_file in ['/etc/glance/glance-api.conf', '/etc/glance/glance-registry.conf']:
+    for config_file in [
+        '/etc/glance/glance-api.conf',
+        '/etc/glance/glance-registry.conf']:
         ConfigEditor.setKey(
             config_file,
             "database",
             "connection",
             "mysql+pymysql://glance:%s@%s/glance" % (
                 passwords["GLANCE_DBPASS"],
-                metadata.servers[metadata.roles['openstack_mysql'][0]]['ip']))
+                mysql_ip))
 
         for key in glance_keystone_configs:
             ConfigEditor.setKey(

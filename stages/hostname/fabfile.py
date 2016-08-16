@@ -5,8 +5,7 @@ import sys
 from zeus.config import ConfigManager
 from zeus.common import FabricManager
 
-from fabric.api import parallel,roles,run,env,puts
-from fabric.colors import red
+from fabric.api import parallel, roles, run, env
 
 metadata = ConfigManager(os.environ["CONFIGFILE"])
 
@@ -18,7 +17,11 @@ def hostname():
     hosts = []
 
     for server in metadata.servers:
-        hosts.append("%s %s.%s %s" % (metadata.servers[server]["ip"], server, metadata.config['domain'], server))
+        hosts.append("%s %s.%s %s" % (
+            metadata.servers[server]["ip"],
+            server,
+            metadata.config['domain'],
+            server))
 
     run("""
 HOSTNAME="%s"
@@ -48,7 +51,10 @@ if [[ ! "$(hostname -f)" == "${HOSTNAME}.${DOMAIN}" ]]; then
     exit 1
 fi
 
-""" % (env.host_string, metadata.config['domain'], "\n".join(hosts)))
+""" % (
+        env.host_string,
+        metadata.config['domain'],
+        "\n".join(hosts)))
 
     sys.exit(0)
 
