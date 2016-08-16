@@ -57,28 +57,6 @@ openstack user list --domain default | grep demo && openstack user set --passwor
 openstack role list | grep user || openstack role create user
 openstack role add --project demo --user demo user
 
-cat >/root/admin-openrc<<EOF
-export OS_PROJECT_DOMAIN_NAME=default
-export OS_USER_DOMAIN_NAME=default
-export OS_PROJECT_NAME=admin
-export OS_USERNAME=admin
-export OS_PASSWORD=$ADMIN_PASS
-export OS_AUTH_URL=http://$CONTROLLER:35357/v3
-export OS_IDENTITY_API_VERSION=3
-export OS_IMAGE_API_VERSION=2
-EOF
-
-cat >/root/demo-openrc<<EOF
-export OS_PROJECT_DOMAIN_NAME=default
-export OS_USER_DOMAIN_NAME=default
-export OS_PROJECT_NAME=demo
-export OS_USERNAME=demo
-export OS_PASSWORD=$DEMO_PASS
-export OS_AUTH_URL=http://$CONTROLLER:5000/v3
-export OS_IDENTITY_API_VERSION=3
-export OS_IMAGE_API_VERSION=2
-EOF
-
 """ % (
         passwords["ADMIN_TOKEN"],
         metadata.servers[env.host_string]['ip'],
