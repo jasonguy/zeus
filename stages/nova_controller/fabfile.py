@@ -183,6 +183,8 @@ openstack endpoint list | grep compute | grep admin    || openstack endpoint cre
         passwords["RABBIT_PASS"])
 
     run("""
+sed -i 's,logdir,log-dir,g;' /etc/nova/nova.conf
+
 su -s /bin/sh -c "nova-manage api_db sync" nova
 su -s /bin/sh -c "nova-manage db sync" nova
 """)
