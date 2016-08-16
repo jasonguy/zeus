@@ -29,8 +29,12 @@ EOF
     RepoManager.repokey("https://download.newrelic.com/548C16BF.gpg")
 
     run("""
-rm -fv /etc/newrelic/nrsysmond.cfg* || true
+test -f /etc/newrelic/nrsysmond.cfg && rm -v /etc/newrelic/nrsysmond.cfg
+
+exit 0
 """)
+
+    run("apt-get update")
 
     RepoManager.install("newrelic-sysmond")
 

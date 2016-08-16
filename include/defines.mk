@@ -1,6 +1,12 @@
 
-ALL = start preflight $(PASSWORDCACHE) $(SSHCONFIG) pingcheck connectcheck hostname newrelic cloudarchive distupgrade \
-			mysql rabbit memcached configeditor keystone keystone_services glance nova_controller nova_compute finish
+ALL = start \
+			preflight $(PASSWORDCACHE) $(SSHCONFIG) \
+			pingcheck connectcheck \
+			hostname newrelic cloudarchive distupgrade \
+			mysql rabbit memcached configeditor \
+			keystone keystone_services glance nova_controller nova_compute neutron nova_controller_post_neutron dashboard \
+			zookeeper cassandra \
+			finish
 
 PP = PYTHONPATH=$(PWD)/lib
 

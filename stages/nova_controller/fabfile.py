@@ -65,6 +65,9 @@ openstack endpoint list | grep compute | grep admin    || openstack endpoint cre
     glance_server = metadata.roles['openstack_glance'][0]
     glance_ip = metadata.servers[glance_server]['ip']
 
+    neutron_server = metadata.roles['openstack_neutron'][0]
+    neutron_ip = metadata.servers[neutron_server]['ip']
+
     my_ip = metadata.servers[env.host_string]['ip']
 
     keystone_configs = {
@@ -96,13 +99,32 @@ openstack endpoint list | grep compute | grep admin    || openstack endpoint cre
             passwords["NOVA_API_DBPASS"],
             mysql_ip))
 
-
     for key in keystone_configs:
         ConfigEditor.setKey(
             config_file,
             "keystone_authtoken",
             key,
             keystone_configs[key])
+
+    neutron_configs = {
+        'url': 'http://%s:9696' % neutron_ip,
+        'auth_url': 'http://%s:35357' % keystone_ip,
+        'auth_type': 'password',
+        'project_domain_name': 'default',
+        'user_domain_name': 'default',
+        'region_name': 'RegionOne',
+        'project_name': 'service',
+        'username': 'neutron',
+        'password': passwords["NEUTRON_PASS"],
+        'service_metadata_proxy': 'True',
+        'metadata_proxy_shared_secret': passwords["NEUTRON_METADATA_SHARED_SECRET"]}
+
+    for key in neutron_configs:
+        ConfigEditor.setKey(
+            config_file,
+            "neutron",
+            key,
+            neutron_configs[key])
 
     ConfigEditor.setKey(
         config_file,

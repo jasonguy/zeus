@@ -17,6 +17,38 @@ FabricManager.setup(metadata.roles)
 @roles('all_servers')
 def cloudarchive():
     RepoManager.install("software-properties-common")
+    RepoManager.install("htop")
+    RepoManager.install("atop")
+
+    run("""
+OS_MIDOKURA_REPOSITORY_USER="%s"
+OS_MIDOKURA_REPOSITORY_PASS="%s"
+
+cat >/etc/apt/sources.list.d/datastax.list<<EOF
+# DataStax (Apache Cassandra)
+deb http://debian.datastax.com/community 2.2 main
+EOF
+
+curl -L https://debian.datastax.com/debian/repo_key | apt-key add -
+
+cat >/etc/apt/sources.list.d/midokura.list<<EOF
+# MEM
+deb http://${OS_MIDOKURA_REPOSITORY_USER}:${OS_MIDOKURA_REPOSITORY_PASS}@repo.midokura.com/mem-5 stable main
+
+# MEM OpenStack Integration
+deb http://repo.midokura.com/openstack-mitaka stable main
+
+# MEM 3rd Party Tools and Libraries
+deb http://repo.midokura.com/misc stable main
+EOF
+
+curl -L https://repo.midokura.com/midorepo.key | apt-key add -
+
+apt-get update
+
+""" % (
+        os.environ["OS_MIDOKURA_REPOSITORY_USER"],
+        os.environ["OS_MIDOKURA_REPOSITORY_PASS"]))
 
     RepoManager.install("python-openstackclient")
 

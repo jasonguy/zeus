@@ -11,6 +11,7 @@ $(PWCDIR):
 $(PASSWORDCACHE): $(PWCDIR)
 	stages/passwordcache/bin//passwordcache.sh "$(@)"
 
+.PHONY: $(SSHCONFIG)
 $(SSHCONFIG): $(SSHDIR)
 	$(PP) stages/sshconfig/bin/sshconfig.py "$(CONFIGFILE)" "$(@)"
 

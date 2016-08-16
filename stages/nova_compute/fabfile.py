@@ -18,9 +18,6 @@ passwords = PasswordManager(os.environ["PASSWORDCACHE"]).passwords
 
 FabricManager.setup(metadata.roles)
 
-#
-# http://docs.openstack.org/mitaka/install-guide-ubuntu/nova-controller-install.html
-#
 @parallel
 @roles('openstack_compute')
 def nova_compute():
@@ -29,7 +26,7 @@ def nova_compute():
     keystone_server = metadata.roles['openstack_keystone'][0]
     keystone_ip = metadata.servers[keystone_server]['ip']
 
-    controller = env.host_string
+    controller = metadata.roles['openstack_controller'][0]
     controller_ip = metadata.servers[controller]['ip']
 
     rabbit_server = metadata.roles['openstack_rabbitmq'][0]
@@ -59,6 +56,24 @@ def nova_compute():
             "keystone_authtoken",
             key,
             keystone_configs[key])
+
+    neutron_configs = {
+        'url': 'http://%s:9696' % neutron_ip,
+        'auth_url': 'http://%s:35357' % keystone_ip,
+        'auth_type': 'password',
+        'project_domain_name': 'default',
+        'user_domain_name': 'default',
+        'region_name': 'RegionOne',
+        'project_name': 'service',
+        'username': 'neutron',
+        'password': passwords["NEUTRON_PASS"]}
+
+    for key in neutron_configs:
+        ConfigEditor.setKey(
+            config_file,
+            "neutron",
+            key,
+            neutron_configs[key])
 
     ConfigEditor.setKey(
         config_file,

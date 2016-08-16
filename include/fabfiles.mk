@@ -1,47 +1,66 @@
-
-pingcheck:
-	$(FABRIC)
-
-connectcheck:
-	$(FABRIC)
-
-hostname:
-	$(FABRIC)
-
-newrelic:
+cassandra:
 	$(FABRIC)
 
 cloudarchive:
 	$(FABRIC)
 
-distupgrade:
-	$(FABRIC)
-
-mysql:
-	$(FABRIC)
-
-rabbit:
-	$(FABRIC)
-
-memcached:
-	$(FABRIC)
-
 configeditor:
 	$(FABRIC)
 
-keystone:
+connectcheck:
 	$(FABRIC)
 
-# the openstack services defined in keystone, not the keystone systemd service in the controller node
-keystone_services:
+dashboard:
+	$(FABRIC)
+
+distupgrade:
 	$(FABRIC)
 
 glance:
 	$(FABRIC)
 
-nova_controller:
+hostname:
+	$(FABRIC)
+
+keystone:
+	$(FABRIC)
+
+keystone_services:
+	$(FABRIC)
+
+memcached:
+	$(FABRIC)
+
+mysql:
+	$(FABRIC)
+
+neutron:
+	$(FABRIC)
+
+newrelic:
 	$(FABRIC)
 
 nova_compute:
+	$(FABRIC)
+
+nova_controller:
+	$(FABRIC)
+
+nova_controller_post_neutron:
+	$(FABRIC)
+
+passwordcache:
+	$(FABRIC)
+
+pingcheck:
+	$(FABRIC)
+
+rabbit:
+	$(FABRIC)
+
+sshconfig:
+	$(FABRIC)
+
+zookeeper:
 	$(FABRIC)
 
