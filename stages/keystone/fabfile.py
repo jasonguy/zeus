@@ -30,7 +30,8 @@ echo "manual" > /etc/init/keystone.override
     RepoManager.install("keystone")
 
     run("""
-systemctl stop keystone
+systemctl stop keystone; echo
+systemctl disable keystone; echo
 """)
 
     RepoManager.install("apache2")

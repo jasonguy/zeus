@@ -3,7 +3,7 @@ config:
     verbose: True
     debug: True
 
-    domain: midocloud.de
+    domain: zeus.midokura.de
 
     # must be a file under /usr/share/zoneinfo
     timezone: Europe/Berlin
@@ -56,5 +56,5 @@ roles:
 
 servers:
     os001:
-        ip: 178.63.102.6
+        ip: 146.185.167.50
 
