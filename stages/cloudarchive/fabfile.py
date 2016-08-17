@@ -16,6 +16,9 @@ FabricManager.setup(metadata.roles)
 @parallel
 @roles('all_servers')
 def cloudarchive():
+
+    RepoManager.remove("upstart")
+
     RepoManager.install("software-properties-common")
     RepoManager.install("htop")
     RepoManager.install("atop")
@@ -49,6 +52,8 @@ deb http://${OS_MIDOKURA_REPOSITORY_USER}:${OS_MIDOKURA_REPOSITORY_PASS}@repo.mi
 EOF
 
 curl -L https://repo.midokura.com/midorepo.key | apt-key add -
+
+ntpdate zeit.fu-berlin.de
 
 apt-get update
 

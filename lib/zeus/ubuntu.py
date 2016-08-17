@@ -30,3 +30,22 @@ apt-get clean
 apt-get -y autoremove
 
 """ % package_name)
+
+    @classmethod
+    def remove(cls, package_name):
+        run("""
+PACKAGE_NAME="%s"
+
+export DEBIAN_FRONTEND=noninteractive
+
+apt-get -y -u purge "${PACKAGE_NAME}"
+
+yes | dpkg --configure -a
+apt-get -y -u --force-yes install
+
+apt-get clean
+
+apt-get -y autoremove
+
+""" % package_name)
+
