@@ -3,21 +3,17 @@ config:
     verbose: True
     debug: True
 
-    domain: zeus.midokura.de
+    domain: midocloud.de
 
     # must be a file under /usr/share/zoneinfo
     timezone: Europe/Berlin
 
 roles:
     zookeeper:
-    - zk001
-    - zk002
-    - zk003
+    - os001
 
     cassandra:
-    - zk001
-    - zk002
-    - zk003
+    - os001
 
     midonet_gateway:
     - os001
@@ -60,10 +56,5 @@ roles:
 
 servers:
     os001:
-        ip: 192.168.6.159
-    zk001:
-        ip: 192.168.6.203
-    zk002:
-        ip: 192.168.6.204
-    zk003:
-        ip: 192.168.6.205
+        ip: 178.63.102.6
+
