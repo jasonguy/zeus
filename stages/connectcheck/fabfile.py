@@ -11,5 +11,7 @@ FabricManager.setup(ConfigManager(os.environ["CONFIGFILE"]).roles)
 @parallel
 @roles('all_servers')
 def connectcheck():
-    run("echo CONNECTED")
+    run("""
+lsb_release -a | grep ^Codename | grep xenial
+""")
 

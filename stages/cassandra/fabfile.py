@@ -97,6 +97,14 @@ nodetool --host 127.0.0.1 status
 
     for server in metadata.roles['cassandra']:
         run("""
-nodetool --host 127.0.0.1 status | grep %s
+SERVER="%s"
+
+for i in $(seq 1 60); do
+    nodetool --host 127.0.0.1 status | grep -- "${SERVER}" && break
+    sleep 1
+done
+
+nodetool --host 127.0.0.1 status | grep -- "${SERVER}"
+
 """ % metadata.servers[server]['ip'])
 

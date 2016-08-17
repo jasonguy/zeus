@@ -1,0 +1,76 @@
+config:
+    domain: zeus.benningen.midokura.de
+
+roles:
+    zookeeper:
+    - zk001
+    - zk002
+    - zk003
+
+    cassandra:
+    - zk001
+    - zk002
+    - zk003
+
+    midonet_gateway:
+    - os002
+
+    midonet_cluster:
+    - os002
+
+    midonet_analytics:
+    - os002
+
+    midonet_manager:
+    - os002
+
+    openstack_rabbitmq:
+    - os001
+
+    openstack_mysql:
+    - os001
+
+    openstack_keystone:
+    - os001
+
+    openstack_glance:
+    - os001
+
+    openstack_neutron:
+    - os001
+
+    openstack_horizon:
+    - os001
+
+    openstack_controller:
+    - os001
+
+    openstack_compute:
+    - os003
+    - os004
+    - os005
+    - os006
+    - os007
+
+servers:
+    zk001:
+        ip: 192.168.6.202
+    zk002:
+        ip: 192.168.6.203
+    zk003:
+        ip: 192.168.6.204
+    os001:
+        ip: 192.168.6.208
+    os002:
+        ip: 192.168.6.209
+    os003:
+        ip: 192.168.6.206
+    os004:
+        ip: 192.168.6.207
+    os005:
+        ip: 192.168.6.200
+    os006:
+        ip: 192.168.6.201
+    os007:
+        ip: 192.168.6.205
+

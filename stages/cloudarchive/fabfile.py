@@ -19,6 +19,7 @@ def cloudarchive():
     RepoManager.install("software-properties-common")
     RepoManager.install("htop")
     RepoManager.install("atop")
+    RepoManager.install("screen")
 
     run("""
 OS_MIDOKURA_REPOSITORY_USER="%s"
@@ -101,4 +102,12 @@ EOF
 """ % (
         metadata.servers[metadata.roles['midonet_cluster'][0]]['ip'],
         passwords["ADMIN_PASS"]))
+
+    run("""
+cat >/root/.screenrc<<EOF
+hardstatus alwayslastline
+
+hardstatus string '%{= kG} Midokura [%= %{= kw}%?%-Lw%?%{r}[%{W}%n*%f %t%?{%u}%?%{r}]%{w}%?%+Lw%?%?%= %{g}] %{W}%{g}%{.w} screen %{.c} [%H]'
+EOF
+""")
 
