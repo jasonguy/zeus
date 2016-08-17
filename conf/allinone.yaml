@@ -10,14 +10,10 @@ config:
 
 roles:
     zookeeper:
-    - zk001
-    - zk002
-    - zk003
+    - os001
 
     cassandra:
-    - cs001
-    - cs002
-    - cs003
+    - os001
 
     midonet_gateway:
     - os001
@@ -61,16 +57,4 @@ roles:
 servers:
     os001:
         ip: 192.168.6.159
-    zk001:
-        ip: 192.168.6.203
-    zk002:
-        ip: 192.168.6.204
-    zk003:
-        ip: 192.168.6.205
-    cs001:
-        ip: 192.168.6.200
-    cs002:
-        ip: 192.168.6.201
-    cs003:
-        ip: 192.168.6.202
 

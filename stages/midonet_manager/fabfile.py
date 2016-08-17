@@ -41,7 +41,7 @@ cat >/var/www/html/midonet-manager/config/client.js<<EOF
   "api_version": "5.0",
   "api_token": false,
   "agent_config_api_namespace": "conf",
-  "analytics_ws_api_url": "ws://${INSIGHTS_IP}:8080/analytics",
+  "analytics_ws_api_url": "ws://${INSIGHT_IP}:8080/analytics",
   "poll_enabled": true,
   "login_animation_enabled": false
 }
