@@ -192,6 +192,9 @@ cgroup_device_acl = [
     "/dev/net/tun"
 ]
 EOF
+
+virsh net-autostart default --disable
+
 """)
 
     ServiceControl.launch("libvirt-bin", "libvirtd")
