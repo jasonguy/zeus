@@ -56,7 +56,7 @@ EOF
 echo "%s" >/etc/zookeeper/conf/myid
 """ % zkid)
 
-    ServiceControl.launch("zookeeper")
+    ServiceControl.launch("zookeeper", "org.apache.zookeeper.server.quorum.QuorumPeerMain")
 
     run("""
 for i in $(seq 1 10); do

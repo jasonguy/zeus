@@ -16,10 +16,10 @@ roles:
     - os002
 
     midonet_cluster:
-    - os002
+    - os001
 
     midonet_analytics:
-    - os002
+    - os001
 
     midonet_manager:
     - os002

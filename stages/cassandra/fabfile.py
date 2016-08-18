@@ -24,6 +24,13 @@ def cassandra():
     RepoManager.install("netcat")
 
     run("""
+systemctl stop cassandra; echo
+ps axufwwwwwwwwwwwwwwwwwwwwwwwwww | grep -v grep | grep org.apache.cassandra.service.CassandraDaemon | awk '{print $2;}' | xargs -n1 --no-run-if-empty kill -9
+
+rm -rfv /var/lib/cassandra/*
+""")
+
+    run("""
 uudecode -o /etc/cassandra/cassandra.yaml.bz2 <<EOF
 begin-base64-encoded 644 \
 L2V0Yy9jYXNzYW5kcmEvY2Fzc2FuZHJhLnlhbWwuYnoy
@@ -68,11 +75,12 @@ bzip2 -d /etc/cassandra/cassandra.yaml.bz2
     my_ip = metadata.servers[env.host_string]['ip']
 
     run("""
-rm -rf /var/lib/cassandra/*
-
-sed -i 's,XXX_CLUSTER_NAME,midonet,g;' /etc/cassandra/cassandra.yaml
 sed -i 's,XXX_LISTEN_ADDRESS,%s,g;' /etc/cassandra/cassandra.yaml
 sed -i 's,XXX_RPC_ADDRESS,%s,g;' /etc/cassandra/cassandra.yaml
+
+ed -i 's,XXX_CLUSTER_NAME,Midonet,g;' /etc/cassandra/cassandra.yaml
+sed -i 's,start_rpc: false,start_rpc: true,g;' /etc/cassandra/cassandra.yaml
+sed -i 's,enable_user_defined_functions: false,enable_user_defined_functions: true,g;' /etc/cassandra/cassandra.yaml
 """ % (my_ip, my_ip))
 
     seeds = []
@@ -81,10 +89,10 @@ sed -i 's,XXX_RPC_ADDRESS,%s,g;' /etc/cassandra/cassandra.yaml
         seeds.append(metadata.servers[server]['ip'])
 
     run("""
-sed -i 's;XXX_SEEDS_SEEDS_SEEDS;%s;g;' /etc/cassandra/cassandra.yaml
+sed -i 's;"XXX_SEEDS_SEEDS_SEEDS";%s;g;' /etc/cassandra/cassandra.yaml
 """ % ",".join(seeds))
 
-    ServiceControl.launch("cassandra")
+    ServiceControl.launch("cassandra", "org.apache.cassandra.service.CassandraDaemon")
 
     run("""
 for i in $(seq 1 30); do

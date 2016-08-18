@@ -19,6 +19,37 @@ FabricManager.setup(metadata.roles)
 @roles('midonet_gateway', 'openstack_compute')
 def midonet_agent():
 
+    run("""
+systemctl stop midolman; echo
+systemctl stop midonet-jmxscraper; echo
+ps axufwwwwwwwwwwwwwwwwwwwwwwwwww | grep -v grep | grep 'org.midonet.midolman.Midolman' | awk '{print $2;}' | xargs -n1 --no-run-if-empty kill -9
+ps axufwwwwwwwwwwwwwwwwwwwwwwwwww | grep -v grep | grep 'org.midonet.services.AgentServicesNode' | awk '{print $2;}' | xargs -n1 --no-run-if-empty kill -9
+ps axufwwwwwwwwwwwwwwwwwwwwwwwwww | grep -v grep | grep 'org.midonet.mem.analytics.jmxscraper.JmxScraperApp' | awk '{print $2;}' | xargs -n1 --no-run-if-empty kill -9
+""")
+
+    all_agents = []
+    for server in metadata.roles['midonet_gateway']:
+        all_agents.append(server)
+    for server in metadata.roles['openstack_compute']:
+        all_agents.append(server)
+
+    if env.host_string == sorted(all_agents)[0]:
+        run("""
+echo 'i am the first box, i will install and start the midonet agent now'
+""")
+    else:
+        run("""
+echo 'waiting 120 seconds for the first box to start midonet agent'
+for i in $(seq 1 120); do
+    for i in $(seq 1 $i); do
+        echo -n '.'
+    done
+    echo
+    sleep 1
+done
+""")
+
+
     RepoManager.install("openjdk-8-jre-headless")
     RepoManager.install("midolman")
     RepoManager.install("midonet-jmxscraper")
@@ -56,7 +87,28 @@ echo 'agent.openstack.metadata.enabled : true' | mn-conf set -t default
         controller_ip,
         passwords["NEUTRON_METADATA_SHARED_SECRET"]))
 
-    ServiceControl.launch("midolman")
+    run("""
+mn-conf set -h local <<EOF
+zookeeper {
+    zookeeper_hosts = "%s"
+}
+
+cassandra {
+    servers = "%s"
+    cluster = "midonet"
+}
+EOF
+
+echo "cassandra.replication_factor : %s" | mn-conf set -h local
+
+""" % (
+        ",".join(zookeeper_hosts),
+        ",".join(cassandra_hosts),
+        cassandra_count))
+
+    ServiceControl.launch("midolman", "org.midonet.midolman.Midolman")
+    ServiceControl.launch("midonet-jmxscraper", "org.midonet.mem.analytics.jmxscraper.JmxScraperApp")
+
 
     run("""
 for i in $(seq 1 30); do
