@@ -109,5 +109,43 @@ sed -i 's,999.999.999.999,%s,g;' /etc/openstack-dashboard/local_settings.py
 sed -i 's,999.999.999.998,%s,g;' /etc/openstack-dashboard/local_settings.py
 """ % keystone_ip)
 
+    run("""
+sed -i 's,#e95420,#000000,g;' -- \
+    /usr/share/openstack-dashboard-ubuntu-theme/static/themes/ubuntu/_variables.scss \
+    /usr/share/openstack-dashboard/openstack_dashboard/static/dashboard/css/5038d12812b0.css
+
+uudecode -o /usr/share/openstack-dashboard/static/dashboard/img/favicon.ico <<EOF
+begin-base64 664 favicon.ico
+AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQA
+AAAAAAAAAAAAAAAAAAAAAAD///8A////AP///wC+8utVZ+HQyev7+Rn///8A
+yfTuR9X28jj///8A////APb9+wr///8A////AP///wD///8A////APr+/QWH
+59qfQdrF/0Haxf945NW1tfDoY07cye125NS1////APf9/Amk7OJ5////AP//
+/wD///8A////AP///wCF5tqjQdrF/0Haxf9V3svi+v79Bf///wDu+/kV8/z7
+D////wD///8A////AP///wD///8A////AP///wC48eleQdrF/0Haxf9B2sX/
+WN3M3vz+/gP///8A9Pz7Dvf9/Ar///8A////AP///wD///8A////AP///wD/
+//8AW97M20Haxf9R3croT9zJ6kHaxf975NaxtfDoY1Hcyeh55daz////APry
+1i2704HF////AP///wCh7OF+9/38Ct749Ct25NW2+v79Bff9/Alw49O95fr3
+If///wDA8utTz/XwP////wD+/fsD+vTcJv///wD///8A+v79Bv///wD///8A
+t/HpYP///wD///8At/HpYP///wD///8A////AP///wD///8A////AP///wD/
+//8A////AP///wD///8AwfPsUlXey+P2/fwK8Pz6FE/cyerN9e9C////AL3h
+sZLF47aE////AObuzkqe26e8/fz2Cvz57RO+1IPA9u/MPMn07klz49O69/38
+CvH8+hJw49K/0vbxPP///wC+4rOQxuS3gv///wDm7MdSm9GF4v389gr8+e0U
+usld6vXux0H///8A////AP///wD///8A////AP///wD///8A////AP///wD/
+//8A////APTmq2D///8A////APTmq2D///8A////APr+/Qb///8A////APrz
+2Cv+/v0A////AOfuzkrp7cpL////APfz2S3Q03i2/v35Bf389gnqzVm/+/bh
+Iu77+RWq7eRx////AP///wC6z3bS+/bjH////wCW2qfEntGD4PXmrV7N03q7
+ZtOf/+bCNenkwDHr5L0i/+nKT8r///8A////AP///wD///8A////AP///wD/
+//8A/fv0DP379Ar///8A/vz4B+XAMevkvSL/5L0i/+S9Iv3267xL////AP//
+/wD///8A////AP///wD///8A////APz57RT9+u8S////AP389grlwC/u5L0i
+/+S9Iv/v2YGQ////AP///wD///8A////AP///wCe6+CC/f7+AP///wC504LH
+vsld5/XmrV7qzVfB5L0i/+S9Iv3v2YGO/v79AP///wD///8A////AP///wD/
+//8A9/38Cv///wD///8A9u/KP/fuyj7///8A+/XfJOnLUMn3675J////AP//
+/wD///8A9/8AAMJ/AACH/wAAh/8AAAJvAAC3/wAA//8AALZtAAC2bQAA//8A
+AP/tAAD2QAAA/+EAAP/hAAD2QwAA/+8AAA==
+====
+EOF
+
+""")
+
     ServiceControl.launch("apache2")
 
