@@ -36,6 +36,29 @@ def midonet_cluster():
         cassandra_count = cassandra_count + 1
         cassandra_hosts.append(metadata.servers[ckserver]['ip'])
 
+    domain_id = run(". admin-openrc ; openstack domain list | grep default | awk '{print $2;}'")
+
+    #
+    # mn-conf set -c -t default wipes the mn-conf clean, make sure you do not do it anywhere after here
+    # the reason we need it here is to avoid keystone.domain_name being preset
+    #
+    run("""
+mn-conf set -c -t default <<EOF
+cluster.auth {
+    provider_class = "org.midonet.cluster.auth.keystone.KeystoneService"
+    admin_role = "admin"
+    keystone.tenant_name = "admin"
+    keystone.admin_token = "%s"
+    keystone.host = %s
+    keystone.port = 35357
+    keystone.domain_id = %s
+}
+EOF
+""" % (
+        passwords["ADMIN_TOKEN"],
+        keystone_ip,
+        domain_id))
+
     run("""
 cat >/etc/midonet/midonet.conf<<EOF
 [zookeeper]
@@ -60,25 +83,6 @@ echo "cassandra.replication_factor : %s" | mn-conf set -t default
         ",".join(zookeeper_hosts),
         ",".join(cassandra_hosts),
         cassandra_count))
-
-    domain_id = run(". admin-openrc ; openstack domain list | grep default | awk '{print $2;}'")
-
-    run("""
-mn-conf set -c -t default <<EOF
-cluster.auth {
-    provider_class = "org.midonet.cluster.auth.keystone.KeystoneService"
-    admin_role = "admin"
-    keystone.tenant_name = "admin"
-    keystone.admin_token = "%s"
-    keystone.host = %s
-    keystone.port = 35357
-    keystone.domain_id = %s
-}
-EOF
-""" % (
-        passwords["ADMIN_TOKEN"],
-        keystone_ip,
-        domain_id))
 
     ServiceControl.launch("midonet-cluster", "org.midonet.cluster.ClusterNode")
 

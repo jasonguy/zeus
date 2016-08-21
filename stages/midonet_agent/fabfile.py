@@ -80,7 +80,7 @@ cp -avpx /etc/midolman/midolman-env.sh.compute.medium \
 """ % ",".join(zookeeper_hosts))
 
     run("""
-mn-conf set -c -t default <<EOF
+mn-conf set -t default <<EOF
 agent {
     openstack {
         metadata {
