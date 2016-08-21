@@ -46,11 +46,6 @@ deb http://repo.midokura.com/openstack-mitaka stable main
 deb http://repo.midokura.com/misc stable main
 EOF
 
-cat >/etc/apt/sources.list.d/midokura2.list<<EOF
-# MEM Release Candidates
-deb http://${OS_MIDOKURA_REPOSITORY_USER}:${OS_MIDOKURA_REPOSITORY_PASS}@repo.midokura.com/mem-5.2 testing main
-EOF
-
 curl -L https://repo.midokura.com/midorepo.key | apt-key add -
 
 ntpdate zeit.fu-berlin.de
@@ -60,6 +55,14 @@ apt-get update
 """ % (
         os.environ["OS_MIDOKURA_REPOSITORY_USER"],
         os.environ["OS_MIDOKURA_REPOSITORY_PASS"]))
+
+    if 'testing' in metadata.config:
+        run("""
+cat >/etc/apt/sources.list.d/midokura2.list<<EOF
+# MEM Release Candidates
+deb http://${OS_MIDOKURA_REPOSITORY_USER}:${OS_MIDOKURA_REPOSITORY_PASS}@repo.midokura.com/mem-%s testing main
+EOF
+""" % metadata.config['testing'])
 
     RepoManager.install("python-openstackclient")
 

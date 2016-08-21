@@ -1,0 +1,49 @@
+config:
+    domain: midokura.de
+
+roles:
+    zookeeper:
+    - nikita
+
+    cassandra:
+    - nikita
+
+    midonet_gateway:
+    - nikita
+
+    midonet_cluster:
+    - nikita
+
+    midonet_analytics:
+    - nikita
+
+    midonet_manager:
+    - nikita
+
+    openstack_rabbitmq:
+    - nikita
+
+    openstack_mysql:
+    - nikita
+
+    openstack_keystone:
+    - nikita
+
+    openstack_glance:
+    - nikita
+
+    openstack_neutron:
+    - nikita
+
+    openstack_horizon:
+    - nikita
+
+    openstack_controller:
+    - nikita
+
+    openstack_compute:
+    - nikita
+
+servers:
+    nikita:
+        ip: 178.63.102.6

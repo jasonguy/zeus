@@ -61,11 +61,24 @@ echo "cassandra.replication_factor : %s" | mn-conf set -t default
         ",".join(cassandra_hosts),
         cassandra_count))
 
+    domain_id = run(". admin-openrc ; openstack domain list | grep default | awk '{print $2;}'")
+
     run("""
 mn-conf set -c -t default <<EOF
-cluster.auth {}
+cluster.auth {
+    provider_class = "org.midonet.cluster.auth.keystone.KeystoneService"
+    admin_role = "admin"
+    keystone.tenant_name = "admin"
+    keystone.admin_token = "%s"
+    keystone.host = %s
+    keystone.port = 35357
+    keystone.domain_id = %s
+}
 EOF
-""")
+""" % (
+        passwords["ADMIN_TOKEN"],
+        keystone_ip,
+        domain_id))
 
     ServiceControl.launch("midonet-cluster", "org.midonet.cluster.ClusterNode")
 

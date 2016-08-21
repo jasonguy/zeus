@@ -1,5 +1,6 @@
 config:
     domain: zeus.benningen.midokura.de
+    testing: 5.2
 
 roles:
     zookeeper:
