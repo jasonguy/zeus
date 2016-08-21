@@ -77,15 +77,23 @@ mn-conf template-set -h local -t agent-compute-medium
 
 cp -avpx /etc/midolman/midolman-env.sh.compute.medium \
     /etc/midolman/midolman-env.sh
+""" % ",".join(zookeeper_hosts))
 
-echo 'agent.openstack.metadata.nova_metadata_url : "http://%s:8775"' | mn-conf set -t default
-echo 'agent.openstack.metadata.shared_secret : "%s"' | mn-conf set -t default
-echo 'agent.openstack.metadata.enabled : true' | mn-conf set -t default
-
+    run("""
+mn-conf set -c -t default <<EOF
+agent {
+    openstack {
+        metadata {
+            enabled = true
+            nova_metadata_url = "http://%s:8775"
+            shared_secret = "%s"
+        }
+    }
+}
+EOF
 """ % (
-        ",".join(zookeeper_hosts),
-        controller_ip,
-        passwords["NEUTRON_METADATA_SHARED_SECRET"]))
+    controller_ip,
+    passwords["NEUTRON_METADATA_SHARED_SECRET"]))
 
     run("""
 mn-conf set -h local <<EOF
