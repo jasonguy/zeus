@@ -8,6 +8,6 @@ class ConfigEditor(object):
     @classmethod
     def setKey(cls, configfile, section, key, value):
         run("""
-/usr/share/zeus/bin/xkv.py set "%s" "%s" "%s" "%s"
+/usr/bin/crudini --set "%s" "%s" "%s" "%s"
 """ % (configfile, section, key, value))
 

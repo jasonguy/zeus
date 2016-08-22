@@ -58,11 +58,17 @@ apt-get update
 
     if 'testing' in metadata.config:
         run("""
+OS_MIDOKURA_REPOSITORY_USER="%s"
+OS_MIDOKURA_REPOSITORY_PASS="%s"
+
 cat >/etc/apt/sources.list.d/midokura2.list<<EOF
 # MEM Release Candidates
 deb http://${OS_MIDOKURA_REPOSITORY_USER}:${OS_MIDOKURA_REPOSITORY_PASS}@repo.midokura.com/mem-%s testing main
 EOF
-""" % metadata.config['testing'])
+""" % (
+    os.environ["OS_MIDOKURA_REPOSITORY_USER"],
+    os.environ["OS_MIDOKURA_REPOSITORY_PASS"],
+    metadata.config['testing']))
 
     RepoManager.install("python-openstackclient")
 
