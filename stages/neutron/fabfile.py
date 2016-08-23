@@ -51,6 +51,7 @@ openstack endpoint list | grep network | grep admin    || openstack endpoint cre
     RepoManager.install("neutron-server")
     RepoManager.install("python-networking-midonet")
     RepoManager.install("python-neutronclient")
+    RepoManager.install("python-memcache")
 
     run("""
 apt-get -y -u purge neutron-plugin-ml2

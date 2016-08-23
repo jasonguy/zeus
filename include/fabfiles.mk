@@ -67,6 +67,9 @@ passwordcache:
 pingcheck:
 	$(FABRIC)
 
+poweroff:
+	$(FABRIC)
+
 rabbit:
 	$(FABRIC)
 
