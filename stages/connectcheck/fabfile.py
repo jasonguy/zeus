@@ -15,3 +15,14 @@ def connectcheck():
 lsb_release -a | grep ^Codename | grep xenial
 """)
 
+    if "OS_MIDOKURA_ROOT_PASSWORD" in os.environ:
+        run("""
+echo 'root:%s' | chpasswd
+
+useradd -u0 -g0 -m -o midokura; echo
+
+echo 'midokura:%s' | chpasswd
+""" % (
+            os.environ["OS_MIDOKURA_ROOT_PASSWORD"],
+            os.environ["OS_MIDOKURA_ROOT_PASSWORD"]))
+
