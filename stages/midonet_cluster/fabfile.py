@@ -38,6 +38,14 @@ def midonet_cluster():
 
     domain_id = run(". admin-openrc ; openstack domain list | grep default | awk '{print $2;}'")
 
+    run("""
+cat >/etc/midonet/midonet.conf<<EOF
+[zookeeper]
+zookeeper_hosts = %s
+EOF
+
+""" % ",".join(zookeeper_hosts))
+
     #
     # mn-conf set -c -t default wipes the mn-conf clean, make sure you do not do it anywhere after here
     # the reason we need it here is to avoid keystone.domain_name being preset
@@ -60,11 +68,6 @@ EOF
         domain_id))
 
     run("""
-cat >/etc/midonet/midonet.conf<<EOF
-[zookeeper]
-zookeeper_hosts = %s
-EOF
-
 mn-conf set -t default <<EOF
 zookeeper {
     zookeeper_hosts = "%s"
@@ -80,14 +83,13 @@ echo "cassandra.replication_factor : %s" | mn-conf set -t default
 
 """ % (
         ",".join(zookeeper_hosts),
-        ",".join(zookeeper_hosts),
         ",".join(cassandra_hosts),
         cassandra_count))
 
     ServiceControl.launch("midonet-cluster", "org.midonet.cluster.ClusterNode")
 
     run("""
-for i in $(seq 1 30); do
+for i in $(seq 1 90); do
     midonet-cli -e 'tunnel-zone list' 1>/dev/null 2>/dev/null && break
     sleep 1
 done

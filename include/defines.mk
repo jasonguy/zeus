@@ -25,7 +25,7 @@ SSHDIR = $(TMPDIR)/.ssh
 SSHCONFIG = $(SSHDIR)/config
 
 ifeq "$(CONFIGFILE)" ""
-CONFIGFILE = $(PWD)/conf/nikita.yaml
+CONFIGFILE = $(PWD)/conf/benningen.yaml
 endif
 
 CC = CONFIGFILE="$(CONFIGFILE)"

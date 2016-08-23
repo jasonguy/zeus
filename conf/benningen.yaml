@@ -14,16 +14,18 @@ roles:
     - zk003
 
     midonet_gateway:
-    - os002
+    - gw001
+    - gw002
+    - gw003
 
     midonet_cluster:
-    - os001
+    - mn001
 
     midonet_analytics:
-    - os001
+    - mn001
 
     midonet_manager:
-    - os002
+    - mn001
 
     openstack_rabbitmq:
     - os001
@@ -38,7 +40,7 @@ roles:
     - os001
 
     openstack_neutron:
-    - os001
+    - mn001
 
     openstack_horizon:
     - os001
@@ -47,31 +49,34 @@ roles:
     - os001
 
     openstack_compute:
-    - os003
-    - os004
-    - os005
-    - os006
-    - os007
+    - compute001
+    - compute002
+    - compute003
+    - compute004
 
 servers:
     zk001:
-        ip: 192.168.6.202
+        ip: 192.168.7.153
     zk002:
-        ip: 192.168.6.203
+        ip: 192.168.7.157
     zk003:
-        ip: 192.168.6.204
+        ip: 192.168.7.160
     os001:
-        ip: 192.168.6.208
-    os002:
-        ip: 192.168.6.209
-    os003:
-        ip: 192.168.6.206
-    os004:
-        ip: 192.168.6.207
-    os005:
-        ip: 192.168.6.200
-    os006:
-        ip: 192.168.6.201
-    os007:
-        ip: 192.168.6.205
+        ip: 192.168.7.165
+    mn001:
+        ip: 192.168.7.163
+    compute001:
+        ip: 192.168.7.162
+    compute002:
+        ip: 192.168.7.164
+    compute003:
+        ip: 192.168.7.151
+    compute004:
+        ip: 192.168.7.152
+    gw001:
+        ip: 192.168.7.154
+    gw002:
+        ip: 192.168.7.156
+    gw003:
+        ip: 192.168.7.159
 
